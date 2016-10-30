@@ -1,4 +1,5 @@
 import {Component, ViewChild, ElementRef, AfterViewInit} from '@angular/core';
+import {ScoreService} from "./service.component";
 
 class Slice {
   size: number;
@@ -22,7 +23,7 @@ class Slice {
   selector: "targetCanvas",
   template: `
   <div>
-    <canvas #targetCanvas width="620" height="620" click="clicked($event)"></canvas>
+    <canvas #targetCanvas width="620" height="620" (click)="clicked($event)"></canvas>
   </div>
     `
 })
@@ -37,6 +38,12 @@ export class TargetComponent implements AfterViewInit {
 
   private ratio = 5;
 
+  scoreService : ScoreService;
+
+  constructor(_scoreService : ScoreService){
+    this.scoreService = _scoreService;
+  }
+
   computePoint(x1: number, y1: number): number {
     var x0 = this.centerX;
     var y0 = this.centerY;
@@ -45,11 +52,10 @@ export class TargetComponent implements AfterViewInit {
     return Math.max(...score);
   }
 
-  scoreHistory: number[] = [];
 
   clicked(event: MouseEvent) {
     let score = this.computePoint(event.layerX, event.layerY);
-    this.scoreHistory.push(score);
+    this.scoreService.push(score)
   }
 
 

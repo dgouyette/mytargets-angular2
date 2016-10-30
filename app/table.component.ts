@@ -1,4 +1,5 @@
 import {AfterViewInit, Component} from "@angular/core";
+import {ScoreService} from "./service.component";
 @Component({
   selector: "targetTable",
   template: `
@@ -19,17 +20,22 @@ import {AfterViewInit, Component} from "@angular/core";
       <td class="text-center"></td>
     </tr>
 </table>
+{{scores}}
     `
 })
 export class TableComponent implements AfterViewInit {
 
+  scoreService : ScoreService;
+
+  scores : number[];
+
+  constructor(_scoreService : ScoreService){
+    this.scoreService = _scoreService;
+  }
   ngAfterViewInit(): void {
+    this.scores = this.scoreService.scoreHistory;
+
   }
 
 }
 
-export class ScoreService {
-  scoreHistory: number[];
-
-
-}
