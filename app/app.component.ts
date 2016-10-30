@@ -1,5 +1,24 @@
 import {Component, ViewChild, ElementRef, AfterViewInit} from '@angular/core';
 
+class Slice{
+  size: number;
+  backgroundColor: string;
+  lineColor: string;
+  lineSize: number;
+
+  constructor(size: number, backgroundColor: string, lineColor  = "#000", lineSize = 1) {
+    this.size = size;
+    this.backgroundColor = backgroundColor;
+    this.lineColor= lineColor;
+    this.lineSize= lineSize;
+  }
+  constructor(size: number, backgroundColor: string, lineSize = 1) {
+    this.size = size;
+    this.backgroundColor = backgroundColor;
+    this.lineColor= "#000";
+    this.lineSize= lineSize;
+  }
+}
 @Component({
   selector: "targetCanvas",
   template: `
@@ -10,39 +29,38 @@ import {Component, ViewChild, ElementRef, AfterViewInit} from '@angular/core';
 })
 
 
-export class Slice{
-  size: number;
-  color: string;
-
-  constructor(size: number, color: string) {
-    this.size = size;
-    this.color = color;
-  }
-}
 
 export class TargetComponent implements AfterViewInit {
   blue = "#00b5ff";
   red = "#ff0000";
   yellow = "#feff4d";
   black = "#000000";
+  white = "#fff";
   centerX = 620 / 2;
   centerY = 620 / 2;
 
-  //sizes  =[[60], [54], [48], [42], [36], [30], [24], [18], [12], [6], [3, this.yellow]];
-  sizes = [
+  sizes  =[
+    new Slice(60, this.white, this.black, 1.5),
+    new Slice(54, this.white),
+    new Slice(48, this.black, this.black),
+    new Slice(42, this.black, this.white),
+    new Slice(36, this.blue),
+    new Slice(30, this.blue),
+    new Slice(24, this.red),
     new Slice(18, this.red),
-    new Slice(12, this.red),
+    new Slice(12, this.yellow),
     new Slice(6, this.yellow),
     new Slice(3, this.yellow)
   ];
 
-
-  drawLine(radius: number, color: string): void {
+  drawLine(radius: number, backgroundColor: string, lineColor : string, lineSize : number): void {
     var ctx = this.targetCanvas.nativeElement.getContext("2d");
     ctx.beginPath();
     ctx.arc(this.centerX, this.centerY, radius, 0, 2 * Math.PI, false);
-    ctx.lineWidth = 1.5;
-    ctx.strokeStyle = this.black;
+    ctx.lineWidth = lineSize;
+    ctx.strokeStyle = lineColor;
+    ctx.fillStyle = backgroundColor;
+    ctx.fill();
     ctx.stroke()
   }
 
@@ -50,6 +68,6 @@ export class TargetComponent implements AfterViewInit {
   @ViewChild("targetCanvas") targetCanvas: ElementRef;
 
   ngAfterViewInit() {
-    this.sizes.map(s => this.drawLine(s.size, s.color))
+    this.sizes.map(s => this.drawLine(s.size*5, s.backgroundColor, s.lineColor, s.lineSize))
   }
 }
