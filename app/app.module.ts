@@ -2,11 +2,12 @@ import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { TargetComponent }  from './app.component';
+import {TableComponent} from "./table.component";
 
 
 @NgModule({
   imports: [ BrowserModule ],
-  declarations: [ TargetComponent ],
-  bootstrap: [ TargetComponent]
+  declarations: [ TargetComponent, TableComponent ],
+  bootstrap: [ TargetComponent, TableComponent]
 })
 export class AppModule { }
